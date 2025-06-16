@@ -1,36 +1,6 @@
 spring:
   application:
     name: GATEWAY-SERVICE
-  cloud:
-    gateway:
-      routes:
-        - id: order-service
-          uri: lb://ORDER-SERVICE
-          predicates:
-            - Path=/order/**
-          filters:
-            - AuthenticationFilter
-            - name: CircuitBreaker
-              args:
-                name: order-service
-                fallbackuri: forward:/orderFallBack
-
-        - id: payment-service
-          uri: lb://PAYMENT-SERVICE
-          predicates:
-            - Path=/payment/**
-          filters:
-            - AuthenticationFilter
-            - name: CircuitBreaker
-              args:
-                name: payment-service
-                fallbackuri: forward:/paymentFallBack
-
-        - id: identity-service
-          uri: lb://IDENTITY-SERVICE
-          predicates:
-            - Path=/auth/**
-
   config:
     import: "optional:configserver:http://localhost:8888"
 
@@ -41,11 +11,11 @@ management:
   endpoints:
     web:
       exposure:
-        include: hystrix.stream
+        include: hystrix.stream, health, info
 
 hystrix:
   command:
-    fallbackcmd:
+    fallback:
       execution:
         isolation:
           thread:

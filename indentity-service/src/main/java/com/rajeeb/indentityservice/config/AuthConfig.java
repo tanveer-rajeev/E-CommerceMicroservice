@@ -45,12 +45,10 @@ public class AuthConfig {
                 .build();
     }
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
